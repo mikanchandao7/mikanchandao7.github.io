@@ -1,68 +1,240 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
-<meta charset="UTF-8">
-<title>限定公開｜話題のFC2作品</title>
-<style>
-body {background:#000; color:#fff; font-family:Arial; margin:0; padding:0;}
-.section {padding:30px;}
-h1 {color:#ff2e63; font-size:28px;}
-.btn {
-display:block;
-width:80%;
-margin:20px auto;
-padding:15px;
-background:#ff2e63;
-color:#fff;
-text-align:center;
-font-size:18px;
-border-radius:8px;
-text-decoration:none;
-}
-.highlight {color:#ffd700;}
-.box {background:#111; padding:20px; border-radius:10px; margin:20px 0;}
-</style>
-</head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JUDAS x ULTIMATE BENTO</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
+    <style>
+        :root {
+            --bg: #050505;
+            --text: #ffffff;
+            --primary: #ff2e63;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --neu-outer: 8px 8px 16px #000, -4px -4px 12px #151515;
+            --neu-inner: inset 4px 4px 8px #000, inset -4px -4px 8px #151515;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* 1. HERO SECTION (Kinetic Typography & Parallax) */
+        .hero {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero h1 {
+            font-size: 15vw;
+            font-weight: 900;
+            letter-spacing: -10px;
+            z-index: 2;
+            pointer-events: none;
+            text-transform: uppercase;
+        }
+
+        .parallax-bg {
+            position: absolute;
+            top: -10%; left: -10%; width: 120%; height: 120%;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+                        url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1974') center/cover;
+            filter: blur(10px);
+            z-index: 1;
+        }
+
+        /* 2. HORIZONTAL SCROLL SECTION */
+        .horizontal-section {
+            overflow: hidden;
+            background: #000;
+        }
+
+        .horizontal-wrapper {
+            display: flex;
+            width: 300vw; /* 3枚分 */
+            height: 100vh;
+        }
+
+        .panel {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 8vw;
+            font-weight: 900;
+            text-transform: uppercase;
+            border-right: 1px solid var(--glass-border);
+        }
+
+        /* 3. BENTO GRID SECTION */
+        .bento-section {
+            padding: 100px 5vw;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .bento-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-auto-rows: 240px;
+            gap: 25px;
+        }
+
+        .card {
+            border-radius: 30px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-decoration: none;
+            color: white;
+        }
+
+        .card:hover { transform: translateY(-10px) scale(1.02); }
+
+        /* Styles Applied to Cards */
+        .glass {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+        }
+
+        .neu {
+            background: #0a0a0a;
+            box-shadow: var(--neu-outer);
+            border: none;
+        }
+
+        .hero-card { grid-column: span 3; grid-row: span 2; background: var(--primary); color: black; }
+        .large { grid-column: span 2; grid-row: span 1; }
+        .tall { grid-row: span 2; }
+
+        /* CTA Neumorphism Button */
+        .cta-area {
+            text-align: center;
+            padding: 100px 0;
+        }
+
+        .neu-btn {
+            background: #0a0a0a;
+            border: none;
+            padding: 25px 60px;
+            border-radius: 50px;
+            color: var(--primary);
+            font-size: 1.5rem;
+            font-weight: 900;
+            box-shadow: var(--neu-outer);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .neu-btn:active {
+            box-shadow: var(--neu-inner);
+            transform: scale(0.95);
+        }
+
+        @media (max-width: 900px) {
+            .bento-container { grid-template-columns: 1fr 1fr; }
+            .hero-card { grid-column: span 2; }
+            .hero h1 { font-size: 20vw; }
+        }
+    </style>
+</head>
 <body>
 
-<div class="section">
-<h1>【SNSで話題】この作品、もう見た？</h1>
-<p>今、検索急上昇中の人気作。</p>
-<a class="btn" href="ここにFC2アフィリエイトリンク">▶ 今すぐフル視聴する</a>
-</div>
+    <section class="hero">
+        <div class="parallax-bg" id="bg"></div>
+        <h1 id="heroText">JUDAS</h1>
+    </section>
 
-<div class="section box">
-<h2>🔥 見どころ</h2>
-  
-<iframe width="1280" height="720" src="https://contents.fc2.com/embed/4786339?i=TkRBM016QXhNekk9" frameborder="0" allowfullscreen></iframe>
-<div class="sample_block" style="width:128px;text-align: left;background: #fff;"><a href="https://adult.contents.fc2.com/article/4786339/?tag=TkRBM016QXhNekk9" target="_blank"><img src="https://contents-thumbnail2.fc2.com/w128/storage201000.contents.fc2.com/file/380/37907664/1761302755.98.jpg?type=resize_max&max=100" style="margin-bottom: 6px;"><br>待望の再販！【個撮】　病の愛犬の手術費用のため撮影を決意　</a></div>
-</a>
-<form action="https://adult.contents.fc2.com/article/4786339/?tag=TkRBM016QXhNekk9" target="_blank" method="get">
-					<div class="sample_block">
-						<input type="hidden" name="aid" value="4786339" />
-						<input type="hidden" name="affuid" value="TkRBM016QXhNekk9" />
-						<input type="submit" value="待望の再販！【個撮】　病の愛犬の手術費用のため撮影を決意　を購入する" />
-					</div>
-				</form>
-<ul>
-<li>✔ 素人感がリアルすぎる</li>
-<li>✔ 本編○○分の超ボリューム</li>
-<li>✔ 限定配信中</li>
-</ul>
-</div>
+    <section class="horizontal-section">
+        <div class="horizontal-wrapper" id="horizontal">
+            <div class="panel" style="color: var(--primary);">RAW</div>
+            <div class="panel">OBSESSION</div>
+            <div class="panel">UNBOUND</div>
+        </div>
+    </section>
 
-<div class="section">
-<h2 class="highlight">⚠ 期間限定の可能性あり</h2>
-<p>人気作品は削除・値上げされることがあります。</p>
-<a class="btn" href="<div class="sample_block"><a href="https://adult.contents.fc2.com/article/4786339/?tag=TkRBM016QXhNekk9" target="_blank">待望の再販！【個撮】　病の愛犬の手術費用のため撮影を決意　</a></div>">▶ 今すぐフル視聴する</a>
+    <section class="bento-section">
+        <div class="bento-container">
+            <div class="card hero-card">
+                <p>01. IDENTITY</p>
+                <h2 style="font-size: 4rem; line-height: 1;">THE PLOT<br>TWISTER</h2>
+            </div>
+            <div class="card neu tall">
+                <h3>SECRET</h3>
+                <p style="opacity: 0.6; font-size: 0.9rem;">Hidden layers of creativity.</p>
+            </div>
+            <div class="card glass">
+                <h3>PREMIUM</h3>
+            </div>
+            <div class="card glass large">
+                <h3>EXCLUSIVE CONTENT</h3>
+            </div>
+            <div class="card neu">
+                <h3>FETISH</h3>
+            </div>
+        </div>
 
-</div>
+        <div class="cta-area">
+            <button class="neu-btn">ENTER THE VOID</button>
+        </div>
+    </section>
 
-<div class="section" style="font-size:12px; text-align:center;">
-※18歳未満閲覧禁止<br>
-※当サイトはアフィリエイト広告を利用しています
-</div>
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
 
+        // A. Kinetic Typography (Mouse Follow)
+        document.addEventListener("mousemove", (e) => {
+            const xPos = (e.clientX / window.innerWidth - 0.5) * 40;
+            const yPos = (e.clientY / window.innerHeight - 0.5) * 40;
+            gsap.to("#heroText", { x: xPos, y: yPos, duration: 1, ease: "power2.out" });
+            gsap.to("#bg", { x: -xPos, y: -yPos, duration: 2, ease: "power2.out" });
+        });
+
+        // B. Horizontal Scroll Animation
+        const horizontal = document.getElementById("horizontal");
+        gsap.to(horizontal, {
+            x: () => -(horizontal.scrollWidth - window.innerWidth),
+            ease: "none",
+            scrollTrigger: {
+                trigger: ".horizontal-section",
+                start: "top top",
+                end: () => "+=" + horizontal.scrollWidth,
+                scrub: 1,
+                pin: true,
+                invalidateOnRefresh: true
+            }
+        });
+
+        // C. Bento Grid Entrance
+        gsap.from(".card", {
+            y: 100,
+            opacity: 0,
+            duration: 1,
+            stagger: 0.1,
+            ease: "power4.out",
+            scrollTrigger: {
+                trigger: ".bento-container",
+                start: "top 85%"
+            }
+        });
+    </script>
 </body>
 </html>
