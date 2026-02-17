@@ -1,240 +1,245 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JUDAS x ULTIMATE BENTO</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;700;900&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JUDAS</title>
 
-    <style>
-        :root {
-            --bg: #050505;
-            --text: #ffffff;
-            --primary: #ff2e63;
-            --glass: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --neu-outer: 8px 8px 16px #000, -4px -4px 12px #151515;
-            --neu-inner: inset 4px 4px 8px #000, inset -4px -4px 8px #151515;
-        }
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+<style>
 
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
-        }
+/* =========================
+   ROOT
+========================= */
 
-        /* 1. HERO SECTION (Kinetic Typography & Parallax) */
-        .hero {
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-        }
+:root{
+  --bg:#050505;
+  --text:#fff;
+  --primary:#ff2e63;
+  --glass:rgba(255,255,255,0.05);
+  --glass-border:rgba(255,255,255,0.1);
+}
 
-        .hero h1 {
-            font-size: 15vw;
-            font-weight: 900;
-            letter-spacing: -10px;
-            z-index: 2;
-            pointer-events: none;
-            text-transform: uppercase;
-        }
+*,
+*::before,
+*::after{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
 
-        .parallax-bg {
-            position: absolute;
-            top: -10%; left: -10%; width: 120%; height: 120%;
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
-                        url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1974') center/cover;
-            filter: blur(10px);
-            z-index: 1;
-        }
+body{
+  font-family:'Inter',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+}
 
-        /* 2. HORIZONTAL SCROLL SECTION */
-        .horizontal-section {
-            overflow: hidden;
-            background: #000;
-        }
+/* =========================
+   HERO
+========================= */
 
-        .horizontal-wrapper {
-            display: flex;
-            width: 300vw; /* 3枚分 */
-            height: 100vh;
-        }
+.hero{
+  position:relative;
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
 
-        .panel {
-            width: 100vw;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 8vw;
-            font-weight: 900;
-            text-transform: uppercase;
-            border-right: 1px solid var(--glass-border);
-        }
+.hero__title{
+  font-size:clamp(4rem,12vw,10rem);
+  font-weight:900;
+  letter-spacing:-4px;
+  text-transform:uppercase;
+  will-change:transform;
+}
 
-        /* 3. BENTO GRID SECTION */
-        .bento-section {
-            padding: 100px 5vw;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
+.hero__bg{
+  position:absolute;
+  inset:0;
+  background:url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1974') center/cover;
+  filter:blur(20px);
+  z-index:-1;
+  will-change:transform;
+}
 
-        .bento-container {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            grid-auto-rows: 240px;
-            gap: 25px;
-        }
+/* =========================
+   HORIZONTAL
+========================= */
 
-        .card {
-            border-radius: 30px;
-            padding: 40px;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            text-decoration: none;
-            color: white;
-        }
+.horizontal{
+  position:relative;
+  height:300vh;
+}
 
-        .card:hover { transform: translateY(-10px) scale(1.02); }
+.horizontal__track{
+  position:sticky;
+  top:0;
+  display:flex;
+  height:100vh;
+  width:300vw;
+  will-change:transform;
+}
 
-        /* Styles Applied to Cards */
-        .glass {
-            background: var(--glass);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-        }
+.horizontal__panel{
+  width:100vw;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:clamp(2rem,5vw,4rem);
+  font-weight:700;
+}
 
-        .neu {
-            background: #0a0a0a;
-            box-shadow: var(--neu-outer);
-            border: none;
-        }
+/* =========================
+   BENTO
+========================= */
 
-        .hero-card { grid-column: span 3; grid-row: span 2; background: var(--primary); color: black; }
-        .large { grid-column: span 2; grid-row: span 1; }
-        .tall { grid-row: span 2; }
+.bento{
+  padding:100px 10vw;
+}
 
-        /* CTA Neumorphism Button */
-        .cta-area {
-            text-align: center;
-            padding: 100px 0;
-        }
+.bento__grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:30px;
+}
 
-        .neu-btn {
-            background: #0a0a0a;
-            border: none;
-            padding: 25px 60px;
-            border-radius: 50px;
-            color: var(--primary);
-            font-size: 1.5rem;
-            font-weight: 900;
-            box-shadow: var(--neu-outer);
-            cursor: pointer;
-            transition: 0.3s;
-        }
+.card{
+  background:var(--glass);
+  backdrop-filter:blur(20px);
+  border:1px solid var(--glass-border);
+  border-radius:24px;
+  padding:40px;
+  transition:transform .3s ease;
+}
 
-        .neu-btn:active {
-            box-shadow: var(--neu-inner);
-            transform: scale(0.95);
-        }
+.card:hover{
+  transform:translateY(-8px);
+}
 
-        @media (max-width: 900px) {
-            .bento-container { grid-template-columns: 1fr 1fr; }
-            .hero-card { grid-column: span 2; }
-            .hero h1 { font-size: 20vw; }
-        }
-    </style>
+.card--large{
+  grid-column:span 2;
+  grid-row:span 2;
+}
+
+.cta{
+  text-align:center;
+  margin-top:80px;
+}
+
+.btn{
+  padding:20px 60px;
+  background:#fff;
+  color:#000;
+  border:none;
+  font-weight:700;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.btn:hover{
+  background:var(--primary);
+  color:#fff;
+  transform:translateY(-4px);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:900px){
+
+  .horizontal__track{
+    flex-direction:column;
+    width:100vw;
+  }
+
+  .horizontal{
+    height:auto;
+  }
+
+  .horizontal__panel{
+    height:100vh;
+  }
+
+  .bento__grid{
+    grid-template-columns:1fr;
+  }
+
+}
+
+</style>
 </head>
 <body>
 
-    <section class="hero">
-        <div class="parallax-bg" id="bg"></div>
-        <h1 id="heroText">JUDAS</h1>
-    </section>
+<header class="hero">
+  <div class="hero__bg"></div>
+  <h1 class="hero__title" id="heroTitle">JUDAS</h1>
+</header>
 
-    <section class="horizontal-section">
-        <div class="horizontal-wrapper" id="horizontal">
-            <div class="panel" style="color: var(--primary);">RAW</div>
-            <div class="panel">OBSESSION</div>
-            <div class="panel">UNBOUND</div>
-        </div>
-    </section>
+<section class="horizontal">
+  <div class="horizontal__track" id="track">
+    <div class="horizontal__panel">RAW</div>
+    <div class="horizontal__panel">OBSESSION</div>
+    <div class="horizontal__panel">LUST</div>
+  </div>
+</section>
 
-    <section class="bento-section">
-        <div class="bento-container">
-            <div class="card hero-card">
-                <p>01. IDENTITY</p>
-                <h2 style="font-size: 4rem; line-height: 1;">THE PLOT<br>TWISTER</h2>
-            </div>
-            <div class="card neu tall">
-                <h3>SECRET</h3>
-                <p style="opacity: 0.6; font-size: 0.9rem;">Hidden layers of creativity.</p>
-            </div>
-            <div class="card glass">
-                <h3>PREMIUM</h3>
-            </div>
-            <div class="card glass large">
-                <h3>EXCLUSIVE CONTENT</h3>
-            </div>
-            <div class="card neu">
-                <h3>FETISH</h3>
-            </div>
-        </div>
+<section class="bento">
+  <div class="bento__grid">
+    <div class="card card--large">Premium</div>
+    <div class="card">Secret</div>
+    <div class="card">Fetish</div>
+    <div class="card">Exclusive</div>
+  </div>
 
-        <div class="cta-area">
-            <button class="neu-btn">ENTER THE VOID</button>
-        </div>
-    </section>
+  <div class="cta">
+    <button class="btn">ENTER</button>
+  </div>
+</section>
 
-    <script>
-        gsap.registerPlugin(ScrollTrigger);
+<script>
 
-        // A. Kinetic Typography (Mouse Follow)
-        document.addEventListener("mousemove", (e) => {
-            const xPos = (e.clientX / window.innerWidth - 0.5) * 40;
-            const yPos = (e.clientY / window.innerHeight - 0.5) * 40;
-            gsap.to("#heroText", { x: xPos, y: yPos, duration: 1, ease: "power2.out" });
-            gsap.to("#bg", { x: -xPos, y: -yPos, duration: 2, ease: "power2.out" });
-        });
+/* =========================
+   RAF SCROLL ENGINE
+========================= */
 
-        // B. Horizontal Scroll Animation
-        const horizontal = document.getElementById("horizontal");
-        gsap.to(horizontal, {
-            x: () => -(horizontal.scrollWidth - window.innerWidth),
-            ease: "none",
-            scrollTrigger: {
-                trigger: ".horizontal-section",
-                start: "top top",
-                end: () => "+=" + horizontal.scrollWidth,
-                scrub: 1,
-                pin: true,
-                invalidateOnRefresh: true
-            }
-        });
+const heroBg = document.querySelector('.hero__bg');
+const heroTitle = document.getElementById('heroTitle');
+const track = document.getElementById('track');
 
-        // C. Bento Grid Entrance
-        gsap.from(".card", {
-            y: 100,
-            opacity: 0,
-            duration: 1,
-            stagger: 0.1,
-            ease: "power4.out",
-            scrollTrigger: {
-                trigger: ".bento-container",
-                start: "top 85%"
-            }
-        });
-    </script>
+let scrollY = 0;
+
+function update(){
+  scrollY = window.scrollY;
+
+  // Parallax
+  heroBg.style.transform = `translateY(${scrollY * 0.3}px)`;
+
+  // Horizontal
+  const horizontalOffset = track.parentElement.offsetTop;
+  const distance = scrollY - horizontalOffset;
+  if(distance > 0 && distance < window.innerHeight * 2){
+    track.style.transform = `translateX(-${distance}px)`;
+  }
+
+  requestAnimationFrame(update);
+}
+
+update();
+
+/* Mouse kinetic */
+
+document.addEventListener('mousemove',e=>{
+  const x = (window.innerWidth/2 - e.clientX)/40;
+  const y = (window.innerHeight/2 - e.clientY)/40;
+  heroTitle.style.transform = `translate(${x}px,${y}px)`;
+});
+
+</script>
+
 </body>
 </html>
