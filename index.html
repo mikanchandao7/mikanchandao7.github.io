@@ -8,7 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
 :root{
---bg:#050505;--card-bg:#111111;--primary:#ff2e63;--text-main:#fff;--text-dim:#888;
+  --bg:#050505; --card-bg:#111111; --primary:#ff2e63; --text-main:#fff; --text-dim:#888;
 }
 body{margin:0;padding:0;font-family:'Inter',sans-serif;background:var(--bg);color:var(--text-main);-webkit-font-smoothing:antialiased;}
 .hero{height:40vh;display:flex;flex-direction:column;justify-content:center;align-items:center;background:radial-gradient(circle at center,#1a1a1a 0%,#000 100%);}
@@ -57,7 +57,29 @@ body{margin:0;padding:0;font-family:'Inter',sans-serif;background:var(--bg);colo
 
 <script>
 const myID="TkRBM016QXhNekk9";
-const products=[ /* ここに全商品リスト */ ];
+const products=[
+{ id:"4843234", img:"https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/407/40692365/1770219106.91.jpg", title:"OBSESSION 01", cat:"Exclusive" },
+{ id:"4848656", img:"https://contents-thumbnail2.fc2.com/w128/storage201000.contents.fc2.com/file/407/40684856/1771013627.34.png", title:"PURE LUST", cat:"Fetish" },
+{ id:"4845406", img:"https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/400/39968267/1770655204.56.jpg", title:"IDOL DESCEND", cat:"Premium" },
+{ id:"4847871", img:"https://contents-thumbnail2.fc2.com/w128/storage201000.contents.fc2.com/file/385/38454154/1771234946.32.jpg", title:"FIRST TAKE", cat:"F-Cup" },
+{ id:"4850064", img:"https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/404/40364366/1771321911.51.jpg", title:"EXPOSURE", cat:"Raw" },
+{ id:"4849438", img:"https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/385/38499350/1771203477.4.png", title:"ADDICTION", cat:"NTR" },
+{ id:"4848783", img:"https://contents-thumbnail2.fc2.com/w128/storage201000.contents.fc2.com/file/365/36422471/1771242009.51.png", title:"CALLIGRAPHY", cat:"Amateur" },
+{ id:"4849993", img:"https://contents-thumbnail2.fc2.com/w128/storage201000.contents.fc2.com/file/370/36940995/1771298608.51.png", title:"WHITE SKIN", cat:"D-Cup" },
+{ id:"4847718", img:"https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/407/40600830/1770890523.81.png", title:"CABIN ATTENDANT", cat:"Real Life" },
+{ id:"4783039", img:"https://contents-thumbnail2.fc2.com/w128/storage201000.contents.fc2.com/file/375/37439458/1760865024.22.png", title:"KIDS MODEL", cat:"Tiny" },
+{ id:"4846723", img:"https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/286/28519270/1770650125.61.jpg", title:"NURSE CANDIDATE", cat:"Beautiful" },
+{ id:"4847465", img:"https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/359/35808353/1770791435.png", title:"SSR DEBUT", cat:"Exclusive" },
+{ id:"4849097", img:"https://contents-thumbnail2.fc2.com/w128/storage201000.contents.fc2.com/file/392/39182810/1771095586.09.jpg", title:"OFFICE LADY", cat:"Slender" },
+{ id:"4849654", img:"https://contents-thumbnail2.fc2.com/w128/storage201000.contents.fc2.com/file/377/37690698/1771239809.8.png", title:"GAP 31 YEARS", cat:"Couple" },
+{ id:"4849400", img:"https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/377/37662966/1771243896.37.jpg", title:"S-CLASS HALF", cat:"NTR" },
+{ id:"4849011", img:"https://contents-thumbnail2.fc2.com/w128/storage201000.contents.fc2.com/file/375/37439458/1771150118.38.png", title:"TALLENT 18", cat:"E-Cup" },
+{ id:"4848863", img:"https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/372/37151217/1771049233.72.jpeg", title:"BLACK 3P", cat:"Hard" },
+{ id:"4834713", img:"https://contents-thumbnail2.fc2.com/w128/storage201000.contents.fc2.com/file/394/39385099/1769346431.68.png", title:"ATHLETE", cat:"I-Cup" },
+{ id:"4806210", img:"https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/375/37439458/1764508583.42.png", title:"TINY IDOL", cat:"Fountain" },
+{ id:"4850166", img:"https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/390/38995321/1771333953.74.JPG", title:"PREGNANT 19", cat:"Extreme" },
+{ id:"3138954", img:"https://contents-thumbnail2.fc2.com/w128/storage70000.contents.fc2.com/file/381/38033549/1670041483.38.jpg", title:"IDOL CONTROL", cat:"Abuse" }
+];
 
 let currentPage=1, perPage=20, filteredProducts=[...products];
 const categorySelect=document.getElementById('categoryFilter');
@@ -88,26 +110,26 @@ function renderPagination(){
   for(let i=1;i<=totalPages;i++){
     const btn=document.createElement('button'); btn.textContent=i;
     if(i===currentPage) btn.classList.add('active');
-    btn.addEventListener('click',()=>{ currentPage=i; renderGrid(); history.pushState({page:i},`Page ${i}`,`?page=${i}`); });
+    btn.addEventListener('click',()=>{
+      currentPage=i; renderGrid();
+      history.pushState({page:i},`Page ${i}`,`?page=${i}`);
+    });
     pagination.appendChild(btn);
   }
 }
 
-// カテゴリフィルター
 categorySelect.addEventListener('change',()=>{
   const val=categorySelect.value;
   filteredProducts=val==='all'? [...products]: products.filter(p=>p.cat===val);
   currentPage=1; renderGrid(); history.pushState({page:1},`Page 1`,'?page=1');
 });
 
-// 並び順
 document.getElementById('sortOrder').addEventListener('change',e=>{
   const val=e.target.value;
   filteredProducts.sort((a,b)=>val==='newest'? products.indexOf(b)-products.indexOf(a): products.indexOf(a)-products.indexOf(b));
   currentPage=1; renderGrid(); history.pushState({page:1},`Page 1`,'?page=1');
 });
 
-// 無限スクロール
 window.addEventListener('scroll',()=>{
   if(window.innerHeight+window.scrollY>=document.body.offsetHeight-200){
     const totalPages=Math.ceil(filteredProducts.length/perPage);
@@ -115,17 +137,14 @@ window.addEventListener('scroll',()=>{
   }
 });
 
-// 履歴操作対応
 window.addEventListener('popstate',event=>{ if(event.state&&event.state.page){ currentPage=event.state.page; renderGrid(); } });
 
-// 初期描画
 const urlParams=new URLSearchParams(window.location.search);
 const pageFromUrl=parseInt(urlParams.get('page'));
 if(pageFromUrl>=1) currentPage=pageFromUrl;
 renderGrid();
 history.replaceState({page:currentPage},`Page ${currentPage}`,`?page=${currentPage}`);
 
-// ヒーロー追従マウス
 document.addEventListener('mousemove',e=>{
   const x=(e.clientX/window.innerWidth-0.5)*20;
   const y=(e.clientY/window.innerHeight-0.5)*20;
