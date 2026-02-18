@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WORKS | JUDAS</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#050505;
+  --text:#fff;
+  --primary:#ff2e63;
+  --glass:rgba(255,255,255,0.05);
+  --border:rgba(255,255,255,0.1);
+}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Inter',sans-serif;
+}
+
+.container{
+  max-width:1400px;
+  margin:0 auto;
+  padding:100px 5vw;
+}
+
+/* フィルターボタン */
+.filters{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-bottom:40px;
+}
+
+.filter-btn{
+  padding:10px 20px;
+  border:1px solid var(--border);
+  background:var(--glass);
+  color:var(--text);
+  cursor:pointer;
+  border-radius:50px;
+  transition:.3s;
+}
+
+.filter-btn.active,
+.filter-btn:hover{
+  background:var(--primary);
+  color:#000;
+}
+
+/* グリッド */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:24px;
+}
+
+.card{
+  background:var(--glass);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:20px;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.card:hover{
+  transform:translateY(-5px);
+  border-color:var(--primary);
+}
+
+.card img{
+  width:100%;
+  border-radius:12px;
+  margin-bottom:15px;
+}
+
+.card h3{
+  margin:0 0 10px;
+}
+
+.card p{
+  font-size:.85rem;
+  opacity:.7;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1 style="margin-bottom:40px;font-size:3rem;">WORKS</h1>
+
+<div class="filters" id="filters"></div>
+
+<div class="grid" id="productGrid"></div>
+
+</div>
+
+<script>
+/* ==========================
+   商品データ
+========================== */
+
+const products = [
+{
+  title:"禁断シリーズ01",
+  category:"fetish",
+  description:"濃厚ストーリー作品",
+  image:"https://via.placeholder.com/400x300",
+  link:"#"
+},
+{
+  title:"寝取られ特集",
+  category:"ntr",
+  description:"背徳感特化",
+  image:"https://via.placeholder.com/400x300",
+  link:"#"
+},
+{
+  title:"制服コレクション",
+  category:"cosplay",
+  description:"王道ジャンル",
+  image:"https://via.placeholder.com/400x300",
+  link:"#"
+}
+];
+
+
+/* ==========================
+   カテゴリ抽出
+========================== */
+
+const categories = ["all", ...new Set(products.map(p => p.category))];
+const filterContainer = document.getElementById("filters");
+
+categories.forEach(cat => {
+  const btn = document.createElement("button");
+  btn.className = "filter-btn";
+  btn.textContent = cat.toUpperCase();
+  btn.dataset.category = cat;
+  if(cat === "all") btn.classList.add("active");
+
+  btn.onclick = () => {
+    document.querySelectorAll(".filter-btn").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+    renderProducts(cat);
+  };
+
+  filterContainer.appendChild(btn);
+});
+
+
+/* ==========================
+   描画処理
+========================== */
+
+const grid = document.getElementById("productGrid");
+
+function renderProducts(category){
+  grid.innerHTML = "";
+
+  const filtered = category === "all"
+    ? products
+    : products.filter(p => p.category === category);
+
+  filtered.forEach(product => {
