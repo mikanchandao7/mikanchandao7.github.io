@@ -3,139 +3,300 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JUDAS | Premium Experience</title>
+<title>JUDAS | The Secret Museum</title>
 <meta name="referrer" content="no-referrer">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400&display=swap" rel="stylesheet">
 <style>
 :root {
-    --bg: #050505;
-    --card-bg: #111111;
-    --primary: #ff2e63;
-    --text-main: #ffffff;
-    --text-dim: #888888;
+    --bg: #030303; /* 漆黒よりわずかに浮かせたリッチブラック */
+    --card-bg: rgba(15, 15, 15, 0.6);
+    --primary: #8b0000; /* 深いワインレッド */
+    --gold: #d4af37;
+    --text-main: #f0f0f0;
+    --text-dim: #666666;
+    --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
 }
+
+/* Base Reset & Lenis Scroll Setup */
+* { box-sizing: border-box; cursor: none !important; /* カスタムカーソル強制 */ }
+html.lenis { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+
 body {
-    margin:0; padding:0; font-family:'Inter',sans-serif; background:var(--bg); color:var(--text-main); -webkit-font-smoothing:antialiased;
+    margin: 0; padding: 0; background: var(--bg); color: var(--text-main);
+    font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
 }
+
+/* Custom Spotlight Cursor */
+.cursor {
+    position: fixed; top: 0; left: 0; width: 40px; height: 40px;
+    border-radius: 50%; pointer-events: none; z-index: 9999;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
+    mix-blend-mode: difference; transition: width 0.4s var(--ease-out-expo), height 0.4s var(--ease-out-expo);
+}
+.cursor.hover-active { width: 120px; height: 120px; background: radial-gradient(circle, rgba(212, 175, 55, 0.6) 0%, rgba(0,0,0,0) 70%); }
+
+/* Intro Loader */
+.loader {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: #000; z-index: 10000; display: flex; justify-content: center; align-items: center;
+}
+.loader-text { font-family: 'Cinzel', serif; font-size: 2rem; letter-spacing: 0.5em; color: var(--text-dim); }
+
+/* Hero Section */
 .hero {
-    height:40vh; display:flex; flex-direction:column; justify-content:center; align-items:center; background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
-    transition: transform 0.2s ease-out;
+    height: 60vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
+    position: relative; overflow: hidden;
 }
-.hero h1 { font-size:clamp(3rem,10vw,6rem); font-weight:900; letter-spacing:-0.07em; color:var(--primary); margin:0; text-transform:uppercase; }
-.hero p { color:var(--text-dim); font-size:0.8rem; letter-spacing:0.3em; margin-top:-10px; text-transform:uppercase; }
+.hero-bg {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(circle at center, #111 0%, #000 100%);
+    z-index: -1; opacity: 0.8;
+}
+.hero h1 {
+    font-family: 'Cinzel', serif; font-size: clamp(4rem, 12vw, 8rem); font-weight: 900;
+    letter-spacing: 0.15em; color: #fff; margin: 0; text-transform: uppercase;
+    text-shadow: 0 10px 30px rgba(0,0,0,0.8);
+}
+.hero p {
+    font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--text-dim);
+    font-size: 1.2rem; letter-spacing: 0.4em; margin-top: 10px;
+}
 
-.container { padding:40px 5vw; max-width:1600px; margin:0 auto; }
-.controls { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:20px; }
-.controls select, .controls button { padding:6px 12px; border-radius:6px; border:none; cursor:pointer; background:#222; color:#fff; font-weight:700; transition: 0.2s; }
-.controls button.active, .controls select:focus { outline:none; background:var(--primary); }
+/* UI Controls (Glassmorphism) */
+.container { padding: 40px 5vw; max-width: 1800px; margin: 0 auto; }
+.controls {
+    display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 60px;
+    justify-content: center; position: relative; z-index: 10;
+}
+.controls select, .controls button {
+    padding: 10px 24px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(20, 20, 20, 0.4); backdrop-filter: blur(10px);
+    color: var(--text-dim); font-family: 'Inter', sans-serif; font-size: 0.85rem; letter-spacing: 0.1em;
+    transition: all 0.4s ease; text-transform: uppercase;
+}
+.controls select:hover, .controls button:hover {
+    color: #fff; border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.05);
+}
+.controls button.active { border-color: var(--gold); color: var(--gold); }
 
-.grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:30px; }
+/* Grid & Cards - The Museum Display */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 60px 40px; }
 
 .card {
-    background:var(--card-bg); border-radius:12px; overflow:hidden; text-decoration:none; color:white; transition:all 0.4s cubic-bezier(0.165,0.84,0.44,1); border:1px solid rgba(255,255,255,0.05); display:block; opacity:0; transform:translateY(20px);
+    text-decoration: none; display: block; position: relative;
+    /* GSAP Clip-path setup */
+    clip-path: inset(100% 0 0 0); visibility: hidden;
 }
-.card.visible { opacity:1; transform:translateY(0); transition: all 0.5s ease; }
-.card:hover { transform:translateY(-8px); border-color:var(--primary); box-shadow:0 20px 40px rgba(0,0,0,0.6); }
-.card-img-wrapper { width:100%; aspect-ratio:16/9; overflow:hidden; background:#000; position:relative; }
-.card img { width:100%; height:100%; object-fit:cover; transition: transform 0.6s ease; display:block; }
-.card:hover img { transform:scale(1.1); }
-.card-content { padding:20px; }
-.card-category { font-size:0.7rem; color:var(--primary); font-weight:700; margin-bottom:8px; letter-spacing:0.1em; }
-.card-title { font-size:1.1rem; font-weight:700; margin:0; line-height:1.3; color:#efefef; }
+.card-img-wrapper {
+    width: 100%; aspect-ratio: 4/5; /* アートポートレート比率 */
+    overflow: hidden; background: #0a0a0a; position: relative;
+}
+.card img {
+    width: 100%; height: 100%; object-fit: cover;
+    filter: grayscale(100%) contrast(1.1) brightness(0.6);
+    transition: filter 1s var(--ease-out-expo), transform 1.5s var(--ease-out-expo);
+}
+.card:hover img {
+    filter: grayscale(0%) contrast(1.0) brightness(1);
+    transform: scale(1.05);
+}
 
-.pagination { margin-top:30px; display:flex; gap:8px; flex-wrap:wrap; justify-content:center; }
-.pagination button { padding:6px 12px; border:none; border-radius:6px; background:#222; color:#fff; cursor:pointer; font-weight:700; transition:0.2s; }
-.pagination button.active { background:var(--primary); }
+/* Card Typography */
+.card-content { padding: 25px 0 10px 0; text-align: center; }
+.card-category {
+    font-family: 'Inter', sans-serif; font-size: 0.65rem; color: var(--gold);
+    letter-spacing: 0.2em; margin-bottom: 12px; text-transform: uppercase;
+}
+.card-title {
+    font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 400;
+    margin: 0; line-height: 1.2; color: #fff; letter-spacing: 0.05em;
+}
 
-::-webkit-scrollbar { width:8px; }
-::-webkit-scrollbar-track { background:#000; }
-::-webkit-scrollbar-thumb { background:#333; border-radius:4px; }
-::-webkit-scrollbar-thumb:hover { background:var(--primary); }
+/* Pagination */
+.pagination { margin-top: 80px; display: flex; gap: 12px; justify-content: center; }
+.pagination button {
+    width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.1);
+    background: transparent; color: var(--text-dim); font-family: 'Inter', serif;
+    transition: 0.4s; padding: 0; display: flex; align-items: center; justify-content: center;
+}
+.pagination button:hover, .pagination button.active {
+    border-color: var(--gold); color: var(--gold);
+}
 
-.skeleton { background:#222; animation:skeleton-loading 1.2s infinite; }
-@keyframes skeleton-loading { 0% {opacity:0.3;} 50%{opacity:1;} 100%{opacity:0.3;} }
+/* Mobile fallback for cursor */
+@media (max-width: 768px) {
+    * { cursor: auto !important; }
+    .cursor { display: none; }
+    .card-img-wrapper { aspect-ratio: 16/9; }
+    .hero h1 { font-size: 3rem; }
+}
 </style>
 </head>
 <body>
 
+<div class="loader"><div class="loader-text">JUDAS</div></div>
+
+<div class="cursor" id="cursor"></div>
+
 <div class="hero">
-    <h1>JUDAS</h1>
-    <p>Premium Experience</p>
+    <div class="hero-bg" id="heroBg"></div>
+    <h1 id="heroTitle">JUDAS</h1>
+    <p>The Secret Museum</p>
 </div>
 
 <div class="container">
     <div class="controls">
-        <select id="categoryFilter"><option value="all">All Categories</option></select>
+        <select id="categoryFilter"><option value="all">ALL EXHIBITIONS</option></select>
         <select id="sortOrder">
-            <option value="newest">Newest</option>
-            <option value="oldest">Oldest</option>
+            <option value="newest">LATEST ARRIVALS</option>
+            <option value="oldest">CLASSICS</option>
         </select>
         <button id="toggleScroll">Infinite Scroll: OFF</button>
     </div>
+    
     <div class="grid" id="productGrid"></div>
     <div class="pagination" id="pagination"></div>
 </div>
 
+<script src="https://unpkg.com/@studio-freight/lenis@1.0.39/dist/lenis.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script>
+gsap.registerPlugin(ScrollTrigger);
+
+// 1. Lenis Smooth Scroll Setup
+const lenis = new Lenis({ duration: 1.5, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), orientation: 'vertical', gestureOrientation: 'vertical', smoothWheel: true });
+function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+requestAnimationFrame(raf);
+lenis.on('scroll', ScrollTrigger.update);
+gsap.ticker.add((time)=>{ lenis.raf(time * 1000); });
+gsap.ticker.lagSmoothing(0, 0);
+
+// 2. Custom Cursor Logic
+const cursor = document.getElementById('cursor');
+let mouseX = 0, mouseY = 0, cursorX = 0, cursorY = 0;
+document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
+gsap.ticker.add(() => {
+    // 慣性をつけてカーソルを追従させる
+    cursorX += (mouseX - cursorX) * 0.15;
+    cursorY += (mouseY - cursorY) * 0.15;
+    gsap.set(cursor, { x: cursorX, y: cursorY });
+});
+
+// Hover effect on links
+document.addEventListener('mouseover', (e) => {
+    if(e.target.closest('a') || e.target.closest('button') || e.target.closest('select')) {
+        cursor.classList.add('hover-active');
+    }
+});
+document.addEventListener('mouseout', (e) => {
+    if(e.target.closest('a') || e.target.closest('button') || e.target.closest('select')) {
+        cursor.classList.remove('hover-active');
+    }
+});
+
+// 3. Intro Loader Animation
+window.addEventListener('load', () => {
+    const tl = gsap.timeline();
+    tl.to('.loader-text', { opacity: 0, duration: 1, delay: 0.5, ease: "power2.inOut" })
+      .to('.loader', { height: 0, duration: 1.2, ease: "expo.inOut" })
+      .from('.hero h1', { y: 50, opacity: 0, duration: 1.5, ease: "expo.out" }, "-=0.5")
+      .from('.hero p', { y: 20, opacity: 0, duration: 1, ease: "power2.out" }, "-=1")
+      .add(() => { initGrid(); }); // ロード後にグリッド描画
+});
+
+// 4. Hero Parallax Effect
+gsap.to('#heroBg', {
+    yPercent: 30, ease: "none",
+    scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true }
+});
+
+// Data (Your Products)
 const myID="TkRBM016QXhNekk9";
-const products=[
-{ id:"4843234", img:"https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/407/40692365/1770219106.91.jpg", title:"OBSESSION 01", cat:"Exclusive" },
-{ id:"4848656", img:"https://contents-thumbnail2.fc2.com/w128/storage201000.contents.fc2.com/file/407/40684856/1771013627.34.png", title:"PURE LUST", cat:"Fetish" },
-{ id:"4845406", img:"https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/400/39968267/1770655204.56.jpg", title:"IDOL DESCEND", cat:"Premium" },
-{ id:"4847871", img:"https://contents-thumbnail2.fc2.com/w128/storage201000.contents.fc2.com/file/385/38454154/1771234946.32.jpg", title:"FIRST TAKE", cat:"F-Cup" },
-{ id:"4850064", img:"https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/404/40364366/1771321911.51.jpg", title:"EXPOSURE", cat:"Raw" },
-{ id:"4849438", img:"https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/385/38499350/1771203477.4.png", title:"ADDICTION", cat:"NTR" },
-{ id:"4848783", img:"https://contents-thumbnail2.fc2.com/w128/storage201000.contents.fc2.com/file/365/36422471/1771242009.51.png", title:"CALLIGRAPHY", cat:"Amateur" },
-{ id:"4849993", img:"https://contents-thumbnail2.fc2.com/w128/storage201000.contents.fc2.com/file/370/36940995/1771298608.51.png", title:"WHITE SKIN", cat:"D-Cup" },
-{ id:"4847718", img:"https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/407/40600830/1770890523.81.png", title:"CABIN ATTENDANT", cat:"Real Life" },
-{ id:"4783039", img:"https://contents-thumbnail2.fc2.com/w128/storage201000.contents.fc2.com/file/375/37439458/1760865024.22.png", title:"KIDS MODEL", cat:"Tiny" },
-{ id:"4846723", img:"https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/286/28519270/1770650125.61.jpg", title:"NURSE CANDIDATE", cat:"Beautiful" },
-{ id:"4847465", img:"https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/359/35808353/1770791435.png", title:"SSR DEBUT", cat:"Exclusive" },
-{ id:"4849097", img:"https://contents-thumbnail2.fc2.com/w128/storage201000.contents.fc2.com/file/392/39182810/1771095586.09.jpg", title:"OFFICE LADY", cat:"Slender" },
-{ id:"4849654", img:"https://contents-thumbnail2.fc2.com/w128/storage201000.contents.fc2.com/file/377/37690698/1771239809.8.png", title:"GAP 31 YEARS", cat:"Couple" },
-{ id:"4849400", img:"https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/377/37662966/1771243896.37.jpg", title:"S-CLASS HALF", cat:"NTR" },
-{ id:"4849011", img:"https://contents-thumbnail2.fc2.com/w128/storage201000.contents.fc2.com/file/375/37439458/1771150118.38.png", title:"TALLENT 18", cat:"E-Cup" },
-{ id:"4848863", img:"https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/372/37151217/1771049233.72.jpeg", title:"BLACK 3P", cat:"Hard" },
-{ id:"4834713", img:"https://contents-thumbnail2.fc2.com/w128/storage201000.contents.fc2.com/file/394/39385099/1769346431.68.png", title:"ATHLETE", cat:"I-Cup" },
-{ id:"4806210", img:"https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/375/37439458/1764508583.42.png", title:"TINY IDOL", cat:"Fountain" },
-{ id:"4850166", img:"https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/390/38995321/1771333953.74.JPG", title:"PREGNANT 19", cat:"Extreme" },
-{ id:"3138954", img:"https://contents-thumbnail2.fc2.com/w128/storage70000.contents.fc2.com/file/381/38033549/1670041483.38.jpg", title:"IDOL CONTROL", cat:"Abuse" }
+const products = [
+    { id:"4843234", img:"https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/407/40692365/1770219106.91.jpg", title:"OBSESSION 01", cat:"Exclusive" },
+    { id:"4848656", img:"https://contents-thumbnail2.fc2.com/w128/storage201000.contents.fc2.com/file/407/40684856/1771013627.34.png", title:"PURE LUST", cat:"Fetish" },
+    { id:"4845406", img:"https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/400/39968267/1770655204.56.jpg", title:"IDOL DESCEND", cat:"Premium" },
+    { id:"4847871", img:"https://contents-thumbnail2.fc2.com/w128/storage201000.contents.fc2.com/file/385/38454154/1771234946.32.jpg", title:"FIRST TAKE", cat:"F-Cup" },
+    { id:"4850064", img:"https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/404/40364366/1771321911.51.jpg", title:"EXPOSURE", cat:"Raw" },
+    { id:"4849438", img:"https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/385/38499350/1771203477.4.png", title:"ADDICTION", cat:"NTR" },
+    { id:"4848783", img:"https://contents-thumbnail2.fc2.com/w128/storage201000.contents.fc2.com/file/365/36422471/1771242009.51.png", title:"CALLIGRAPHY", cat:"Amateur" },
+    { id:"4849993", img:"https://contents-thumbnail2.fc2.com/w128/storage201000.contents.fc2.com/file/370/36940995/1771298608.51.png", title:"WHITE SKIN", cat:"D-Cup" },
+    { id:"4847718", img:"https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/407/40600830/1770890523.81.png", title:"CABIN ATTENDANT", cat:"Real Life" },
+    { id:"4783039", img:"https://contents-thumbnail2.fc2.com/w128/storage201000.contents.fc2.com/file/375/37439458/1760865024.22.png", title:"KIDS MODEL", cat:"Tiny" }
 ];
 
-let currentPage=1;
-const perPage=20;
+let currentPage=1; const perPage=6; /* アート感を出すため表示数を絞る */
 let filteredProducts=[...products];
 let infiniteScroll=false;
 
-// カテゴリセット
+// Categories setup
 const categorySelect=document.getElementById('categoryFilter');
 [...new Set(products.map(p=>p.cat))].sort().forEach(cat=>{
-    const opt=document.createElement('option');
-    opt.value=cat; opt.textContent=cat;
+    const opt=document.createElement('option'); opt.value=cat; opt.textContent=cat;
     categorySelect.appendChild(opt);
 });
 
-// グリッド描画関数
+// 5. Grid Rendering & GSAP Reveal
 function renderGrid(append=false){
-    const grid=document.getElementById('productGrid');
-    if(!append) grid.innerHTML='';
+    const grid = document.getElementById('productGrid');
+    if(!append) {
+        grid.innerHTML='';
+        window.scrollTo({top: 0, behavior: 'smooth'}); // ページ変更時はトップへ
+    }
+    
     const start=(currentPage-1)*perPage;
     const end=start+perPage;
-    filteredProducts.slice(start,end).forEach(p=>{
+    const itemsToRender = filteredProducts.slice(start,end);
+
+    itemsToRender.forEach(p=>{
         const highResImg=p.img.replace('w128','w720');
         const card=document.createElement('a');
-        card.className='card';
+        card.className='card un-animated';
         card.href=`https://adult.contents.fc2.com/article/${p.id}/?i=${myID}`;
         card.target='_blank';
-        card.innerHTML=`<div class="card-img-wrapper"><img src="${highResImg}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600'" class="skeleton"></div><div class="card-content"><div class="card-category">${p.cat}</div><h3 class="card-title">${p.title}</h3></div>`;
+        card.innerHTML=`
+            <div class="card-img-wrapper">
+                <img src="${highResImg}" loading="lazy" onerror="this.style.display='none'">
+            </div>
+            <div class="card-content">
+                <div class="card-category">${p.cat}</div>
+                <h3 class="card-title">${p.title}</h3>
+            </div>
+        `;
         grid.appendChild(card);
-        setTimeout(()=>card.classList.add('visible'),100);
-        card.querySelector('img').onload=()=>card.querySelector('img').classList.remove('skeleton');
     });
+
     renderPagination();
+    applyGSAPAnimations();
 }
 
-// ページ番号描画
+// マスク展開アニメーション (ScrollTrigger)
+function applyGSAPAnimations() {
+    // 新しく追加されたカードのみを対象にする
+    const newCards = gsap.utils.toArray('.card.un-animated');
+    
+    newCards.forEach(card => {
+        card.classList.remove('un-animated');
+        gsap.fromTo(card, 
+            { clipPath: "inset(100% 0 0 0)", autoAlpha: 0, y: 40 },
+            { clipPath: "inset(0% 0 0 0)", autoAlpha: 1, y: 0, duration: 1.5, ease: "expo.out",
+              scrollTrigger: {
+                  trigger: card,
+                  start: "top 85%", // 画面の85%の位置に来たら発火
+                  toggleActions: "play none none none"
+              }
+            }
+        );
+    });
+    ScrollTrigger.refresh(); // 追加後にトリガーを再計算
+}
+
 function renderPagination(){
     const pagination=document.getElementById('pagination');
     pagination.innerHTML='';
@@ -144,57 +305,43 @@ function renderPagination(){
         const btn=document.createElement('button');
         btn.textContent=i;
         if(i===currentPage) btn.classList.add('active');
-        btn.addEventListener('click',()=>{ currentPage=i; renderGrid(); });
+        btn.addEventListener('click', () => { currentPage=i; renderGrid(); });
         pagination.appendChild(btn);
     }
 }
 
-// カテゴリフィルター
+// Events
 categorySelect.addEventListener('change',()=>{
-    const val=categorySelect.value;
-    filteredProducts=val==='all'? [...products]: products.filter(p=>p.cat===val);
-    currentPage=1;
-    renderGrid();
+    filteredProducts=categorySelect.value==='all'? [...products]: products.filter(p=>p.cat===categorySelect.value);
+    currentPage=1; renderGrid();
 });
 
-// 並び順変更
 document.getElementById('sortOrder').addEventListener('change', e=>{
     const val=e.target.value;
-    filteredProducts.sort((a,b)=>{
-        if(val==='newest') return products.indexOf(b)-products.indexOf(a);
-        else return products.indexOf(a)-products.indexOf(b);
-    });
-    currentPage=1;
-    renderGrid();
+    filteredProducts.sort((a,b)=> val==='newest'? products.indexOf(b)-products.indexOf(a): products.indexOf(a)-products.indexOf(b));
+    currentPage=1; renderGrid();
 });
 
-// 無限スクロール切替
 document.getElementById('toggleScroll').addEventListener('click', e=>{
     infiniteScroll=!infiniteScroll;
     e.target.textContent=`Infinite Scroll: ${infiniteScroll?'ON':'OFF'}`;
+    e.target.classList.toggle('active');
+    document.getElementById('pagination').style.display = infiniteScroll ? 'none' : 'flex';
 });
 
-// 無限スクロール処理
+// Infinite Scroll logic
 window.addEventListener('scroll', ()=>{
     if(!infiniteScroll) return;
-    if(window.innerHeight+window.scrollY>=document.body.offsetHeight-200){
+    if(window.innerHeight+window.scrollY >= document.body.offsetHeight - 500){
         const totalPages=Math.ceil(filteredProducts.length/perPage);
         if(currentPage<totalPages){
             currentPage++;
-            renderGrid(true);
+            renderGrid(true); // 追記モード
         }
     }
 });
 
-// 初期描画
-renderGrid();
-
-// ヒーロー追従マウスエフェクト
-document.addEventListener('mousemove', e=>{
-    const x=(e.clientX/window.innerWidth-0.5)*20;
-    const y=(e.clientY/window.innerHeight-0.5)*20;
-    document.querySelector('.hero h1').style.transform=`translate(${x}px,${y}px)`;
-});
+function initGrid() { renderGrid(); }
 </script>
 </body>
 </html>
