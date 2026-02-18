@@ -1,157 +1,203 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JUDAS | Premium Experience</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;900&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JUDAS | Premium Experience</title>
 
-    <style>
-        /* 基本の黒いデザイン */
-        body {
-            background-color: #050505;
-            color: #ffffff;
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-            padding: 0;
-            line-height: 1.6;
-        }
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
 
-        /* ヒーロー部分：シンプルに大きく */
-        .hero {
-            height: 60vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1000') center/cover;
-        }
+<style>
+:root{
+--bg:#050505;
+--card-bg:#111111;
+--primary:#ff2e63;
+--text-main:#ffffff;
+--text-dim:#888888;
+}
 
-        .hero h1 {
-            font-size: 5rem;
-            font-weight: 900;
-            letter-spacing: -2px;
-            margin: 0;
-        }
+body{
+background-color:var(--bg);
+color:var(--text-main);
+font-family:'Inter',sans-serif;
+margin:0;
+-webkit-font-smoothing:antialiased;
+}
 
-        /* 商品グリッド：Bentoスタイルを維持 */
-        .container {
-            padding: 50px 5vw;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+.hero{
+height:40vh;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+background:radial-gradient(circle at center,#1a1a1a 0%,#000 100%);
+}
 
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-        }
+.hero h1{
+font-size:clamp(3rem,10vw,6rem);
+font-weight:900;
+letter-spacing:-0.07em;
+color:var(--primary);
+margin:0;
+text-transform:uppercase;
+}
 
-        /* カード単体のデザイン */
-        .card {
-            background: #111;
-            border: 1px solid #333;
-            border-radius: 20px;
-            overflow: hidden;
-            text-decoration: none;
-            color: white;
-            transition: transform 0.2s;
-            display: flex;
-            flex-direction: column;
-        }
+.hero p{
+color:var(--text-dim);
+font-size:0.8rem;
+letter-spacing:0.3em;
+text-transform:uppercase;
+margin-top:-10px;
+}
 
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: #ff2e63; /* ピンクのアクセント */
-        }
+.container{
+padding:40px 5vw;
+max-width:1600px;
+margin:0 auto;
+}
 
-        .card img {
-            width: 100%;
-            aspect-ratio: 16/9;
-            object-fit: cover;
-            background: #222; /* 画像がない時の色 */
-        }
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+gap:30px;
+}
 
-        .card-content {
-            padding: 20px;
-        }
+.card{
+background:var(--card-bg);
+border-radius:12px;
+overflow:hidden;
+text-decoration:none;
+color:white;
+transition:all .3s ease;
+border:1px solid rgba(255,255,255,0.05);
+display:block;
+}
 
-        .card-category {
-            font-size: 0.7rem;
-            color: #ff2e63;
-            text-transform: uppercase;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
+.card:hover{
+transform:translateY(-6px);
+border-color:var(--primary);
+box-shadow:0 20px 40px rgba(0,0,0,.6);
+}
 
-        .card-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin: 0;
-        }
+.card-img-wrapper{
+width:100%;
+aspect-ratio:16/9;
+overflow:hidden;
+background:#000;
+}
 
-        /* スマホ対応 */
-        @media (max-width: 600px) {
-            .hero h1 { font-size: 3rem; }
-            .grid { grid-template-columns: 1fr; }
-        }
-    </style>
+.card img{
+width:100%;
+height:100%;
+object-fit:cover;
+transition:transform .5s ease;
+}
+
+.card:hover img{
+transform:scale(1.08);
+}
+
+.card-content{
+padding:20px;
+}
+
+.card-category{
+font-size:.7rem;
+color:var(--primary);
+font-weight:700;
+margin-bottom:8px;
+letter-spacing:.1em;
+}
+
+.card-title{
+font-size:1.1rem;
+font-weight:700;
+margin:0;
+line-height:1.3;
+color:#efefef;
+}
+
+::-webkit-scrollbar{width:8px;}
+::-webkit-scrollbar-track{background:#000;}
+::-webkit-scrollbar-thumb{background:#333;border-radius:4px;}
+::-webkit-scrollbar-thumb:hover{background:var(--primary);}
+</style>
 </head>
+
 <body>
 
-    <div class="hero">
-        <h1>JUDAS</h1>
-    </div>
+<div class="hero">
+<h1>JUDAS</h1>
+<p>Premium Experience</p>
+</div>
 
-    <div class="container">
-        <div class="grid" id="productGrid">
-            </div>
-    </div>
+<div class="container">
+<div class="grid" id="productGrid"></div>
+</div>
 
-    <script>
-        const myID = "TkRBM016QXhNekk9"; 
-        const products = [
-            { id: "4843234", img: "https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/407/40692365/1770219106.91.jpg", title: "OBSESSION 01", cat: "Exclusive" },
-            { id: "4848656", img: "https://contents-thumbnail2.fc2.com/w128/storage201000.contents.fc2.com/file/407/40684856/1771013627.34.png", title: "PURE LUST", cat: "Fetish" },
-            { id: "4845406", img: "https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/400/39968267/1770655204.56.jpg", title: "IDOL DESCEND", cat: "Premium" },
-            { id: "4847871", img: "https://contents-thumbnail2.fc2.com/w128/storage201000.contents.fc2.com/file/385/38454154/1771234946.32.jpg", title: "FIRST TAKE", cat: "F-Cup" },
-            { id: "4850064", img: "https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/404/40364366/1771321911.51.jpg", title: "EXPOSURE", cat: "Raw" },
-            { id: "4849438", img: "https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/385/38499350/1771203477.4.png", title: "ADDICTION", cat: "NTR" },
-            { id: "4848783", img: "https://contents-thumbnail2.fc2.com/w128/storage201000.contents.fc2.com/file/365/36422471/1771242009.51.png", title: "CALLIGRAPHY", cat: "Amateur" },
-            { id: "4849993", img: "https://contents-thumbnail2.fc2.com/w128/storage201000.contents.fc2.com/file/370/36940995/1771298608.51.png", title: "WHITE SKIN", cat: "D-Cup" },
-            { id: "4847718", img: "https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/407/40600830/1770890523.81.png", title: "CABIN ATTENDANT", cat: "Real Life" },
-            { id: "4783039", img: "https://contents-thumbnail2.fc2.com/w128/storage201000.contents.fc2.com/file/375/37439458/1760865024.22.png", title: "KIDS MODEL", cat: "Tiny" },
-            { id: "4846723", img: "https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/286/28519270/1770650125.61.jpg", title: "NURSE CANDIDATE", cat: "Beautiful" },
-            { id: "4847465", img: "https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/359/35808353/1770791435.png", title: "SSR DEBUT", cat: "Exclusive" },
-            { id: "4849097", img: "https://contents-thumbnail2.fc2.com/w128/storage201000.contents.fc2.com/file/392/39182810/1771095586.09.jpg", title: "OFFICE LADY", cat: "Slender" },
-            { id: "4849654", img: "https://contents-thumbnail2.fc2.com/w128/storage201000.contents.fc2.com/file/377/37690698/1771239809.8.png", title: "GAP 31 YEARS", cat: "Couple" },
-            { id: "4849400", img: "https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/377/37662966/1771243896.37.jpg", title: "S-CLASS HALF", cat: "NTR" },
-            { id: "4849011", img: "https://contents-thumbnail2.fc2.com/w128/storage201000.contents.fc2.com/file/375/37439458/1771150118.38.png", title: "TALLENT 18", cat: "E-Cup" },
-            { id: "4848863", img: "https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/372/37151217/1771049233.72.jpeg", title: "BLACK 3P", cat: "Hard" },
-            { id: "4834713", img: "https://contents-thumbnail2.fc2.com/w128/storage201000.contents.fc2.com/file/394/39385099/1769346431.68.png", title: "ATHLETE", cat: "I-Cup" },
-            { id: "4806210", img: "https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/375/37439458/1764508583.42.png", title: "TINY IDOL", cat: "Fountain" },
-            { id: "4850166", img: "https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/390/38995321/1771333953.74.JPG", title: "PREGNANT 19", cat: "Extreme" },
-            { id: "3138954", img: "https://contents-thumbnail2.fc2.com/w128/storage70000.contents.fc2.com/file/381/38033549/1670041483.38.jpg", title: "IDOL CONTROL", cat: "Abuse" }
-        ];
+<script>
+document.addEventListener('DOMContentLoaded',function(){
 
-        const grid = document.getElementById('productGrid');
-        
-        // 商品を一つずつ画面に追加する
-        products.forEach(p => {
-            const card = document.createElement('a');
-            card.className = 'card';
-            card.href = `https://adult.contents.fc2.com/article/${p.id}/?i=${myID}`;
-            card.target = '_blank';
-            
-            card.innerHTML = `
-                <img src="${p.img}" onerror="this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=400'">
-                <div class="card-content">
-                    <div class="card-category">${p.cat}</div>
-                    <h3 class="card-title">${p.title}</h3>
-                </div>
-            `;
-            grid.appendChild(card);
-        });
-    </script>
+const myID="TkRBM016QXhNekk9";
+
+const products=[
+{ id:"4843234", img:"https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/407/40692365/1770219106.91.jpg", title:"OBSESSION 01", cat:"Exclusive" },
+{ id:"4848656", img:"https://contents-thumbnail2.fc2.com/w128/storage201000.contents.fc2.com/file/407/40684856/1771013627.34.png", title:"PURE LUST", cat:"Fetish" },
+{ id:"4845406", img:"https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/400/39968267/1770655204.56.jpg", title:"IDOL DESCEND", cat:"Premium" },
+{ id:"4847871", img:"https://contents-thumbnail2.fc2.com/w128/storage201000.contents.fc2.com/file/385/38454154/1771234946.32.jpg", title:"FIRST TAKE", cat:"F-Cup" },
+{ id:"4850064", img:"https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/404/40364366/1771321911.51.jpg", title:"EXPOSURE", cat:"Raw" },
+{ id:"4849438", img:"https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/385/38499350/1771203477.4.png", title:"ADDICTION", cat:"NTR" },
+{ id:"4848783", img:"https://contents-thumbnail2.fc2.com/w128/storage201000.contents.fc2.com/file/365/36422471/1771242009.51.png", title:"CALLIGRAPHY", cat:"Amateur" },
+{ id:"4849993", img:"https://contents-thumbnail2.fc2.com/w128/storage201000.contents.fc2.com/file/370/36940995/1771298608.51.png", title:"WHITE SKIN", cat:"D-Cup" },
+{ id:"4847718", img:"https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/407/40600830/1770890523.81.png", title:"CABIN ATTENDANT", cat:"Real Life" },
+{ id:"4783039", img:"https://contents-thumbnail2.fc2.com/w128/storage201000.contents.fc2.com/file/375/37439458/1760865024.22.png", title:"KIDS MODEL", cat:"Tiny" },
+{ id:"4846723", img:"https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/286/28519270/1770650125.61.jpg", title:"NURSE CANDIDATE", cat:"Beautiful" },
+{ id:"4847465", img:"https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/359/35808353/1770791435.png", title:"SSR DEBUT", cat:"Exclusive" },
+{ id:"4849097", img:"https://contents-thumbnail2.fc2.com/w128/storage201000.contents.fc2.com/file/392/39182810/1771095586.09.jpg", title:"OFFICE LADY", cat:"Slender" },
+{ id:"4849654", img:"https://contents-thumbnail2.fc2.com/w128/storage201000.contents.fc2.com/file/377/37690698/1771239809.8.png", title:"GAP 31 YEARS", cat:"Couple" },
+{ id:"4849400", img:"https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/377/37662966/1771243896.37.jpg", title:"S-CLASS HALF", cat:"NTR" },
+{ id:"4849011", img:"https://contents-thumbnail2.fc2.com/w128/storage201000.contents.fc2.com/file/375/37439458/1771150118.38.png", title:"TALLENT 18", cat:"E-Cup" },
+{ id:"4848863", img:"https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/372/37151217/1771049233.72.jpeg", title:"BLACK 3P", cat:"Hard" },
+{ id:"4834713", img:"https://contents-thumbnail2.fc2.com/w128/storage201000.contents.fc2.com/file/394/39385099/1769346431.68.png", title:"ATHLETE", cat:"I-Cup" },
+{ id:"4806210", img:"https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/375/37439458/1764508583.42.png", title:"TINY IDOL", cat:"Fountain" },
+{ id:"4850166", img:"https://contents-thumbnail2.fc2.com/w128/storage200000.contents.fc2.com/file/390/38995321/1771333953.74.JPG", title:"PREGNANT 19", cat:"Extreme" },
+{ id:"3138954", img:"https://contents-thumbnail2.fc2.com/w128/storage70000.contents.fc2.com/file/381/38033549/1670041483.38.jpg", title:"IDOL CONTROL", cat:"Abuse" }
+];
+
+const grid=document.getElementById('productGrid');
+const fragment=document.createDocumentFragment();
+
+products.forEach(p=>{
+
+const highResImg=p.img.includes('w128')
+? p.img.replace('w128','w720')
+: p.img;
+
+const card=document.createElement('a');
+card.className='card';
+card.href=`https://adult.contents.fc2.com/article/${p.id}/?i=${myID}`;
+card.target='_blank';
+card.rel='noopener noreferrer';
+
+card.innerHTML=`
+<div class="card-img-wrapper">
+<img src="${highResImg}" loading="lazy"
+onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600'">
+</div>
+<div class="card-content">
+<div class="card-category">${p.cat}</div>
+<h3 class="card-title">${p.title}</h3>
+</div>
+`;
+
+fragment.appendChild(card);
+
+});
+
+grid.appendChild(fragment);
+
+});
+</script>
+
 </body>
 </html>
